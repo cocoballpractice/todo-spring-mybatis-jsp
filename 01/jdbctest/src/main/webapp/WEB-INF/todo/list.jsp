@@ -5,7 +5,7 @@
     <title>Todo List</title>
 </head>
 <body>
-<h1>COCOBALL TODO LISI</h1>
+<h1>COCOBALL TODO LIST</h1>
 
 <ul>
     <c:forEach items="${dtoList}" var="dto">

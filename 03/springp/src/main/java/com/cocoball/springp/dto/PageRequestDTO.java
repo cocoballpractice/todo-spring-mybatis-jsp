@@ -40,48 +40,50 @@ public class PageRequestDTO {
     private LocalDate from;
     private LocalDate to;
 
-    // 검색 조건 표시용 메소드
-    public boolean checkType(String Type) {
-
-        if(types == null || types.length == 0) {
-            return false;
-        }
-
-        return Arrays.stream(types).anyMatch(types::equals);
-    }
-
-    // 조회를 위한 링크 처리
+    // 검색 조회 시 링크 처리 용
     public String getLink() {
         StringBuilder builder = new StringBuilder();
-        builder.append("page=" + this.page);
-        builder.append("$size=" + this.size);
 
-        if(finished) {
+        builder.append("page=" + this.page);
+
+        builder.append("&size=" + this.size);
+
+        if(finished){
             builder.append("&finished=on");
         }
 
-        if(types != null && types.length > 0) {
+        if(types != null && types.length > 0){
             for (int i = 0; i < types.length ; i++) {
                 builder.append("&types=" + types[i]);
             }
         }
 
-        if(keyword != null) {
+        if(keyword != null){
             try {
-                builder.append("&keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+                builder.append("&keyword=" + URLEncoder.encode(keyword,"UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
 
-        if(from != null) {
+        if(from != null){
             builder.append("&from=" + from.toString());
         }
 
-        if(to != null) {
+        if(to != null){
             builder.append("&to=" + to.toString());
         }
 
         return builder.toString();
     }
+
+    // 검색 조건 값 출력용
+    public boolean checkType(String type){
+
+        if(types == null || types.length == 0){
+            return false;
+        }
+        return Arrays.stream(types).anyMatch(type::equals);
+    }
+
 }

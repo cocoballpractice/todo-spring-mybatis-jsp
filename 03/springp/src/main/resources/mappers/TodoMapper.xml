@@ -9,31 +9,74 @@
     </select>
 
     <insert id="insert">
-        insert into tbl_todo (title, dueDate, writer) values ( #{title}, #{dueDate}, #{writer} )
+        insert into tbl_todo (title, dueDate, writer)
+        values (#{title}, #{dueDate}, #{writer})
     </insert>
 
     <select id="selectAll" resultType="com.cocoball.springp.domain.TodoVO">
-        select * from tbl_todo order by tno desc
+        select *
+        from tbl_todo
+        order by tno desc
     </select>
 
     <select id="selectOne" resultType="com.cocoball.springp.domain.TodoVO">
-        select * from tbl_todo where tno = #{tno}
+        select *
+        from tbl_todo
+        where tno = #{tno}
     </select>
 
     <delete id="delete">
-        delete from tbl_todo where tno = #{tno}
+        delete
+        from tbl_todo
+        where tno = #{tno}
     </delete>
 
     <update id="update">
-        update tbl_todo set title = #{title}, dueDate = #{dueDate}, finished = #{finished} where tno = #{tno}
+        update tbl_todo
+        set title    = #{title},
+            dueDate  = #{dueDate},
+            finished = #{finished}
+        where tno = #{tno}
     </update>
 
+    <sql id="search"> <!-- 재사용을 위해 동적 쿼리 분리 -->
+        <where>
+            <if test="types != null and types.length > 0">
+                <foreach collection="types" item="type" open="(" close=")" separator=" OR ">
+                    <if test="type == 't'.toString()">
+                        title like concat('%', #{keyword}, '%')
+                    </if>
+                    <if test="type == 'w'.toString()">
+                        writer like concat('%', #{keyword}, '%')
+                    </if>
+                </foreach>
+            </if>
+
+            <if test="finished">
+                <trim prefix="and">
+                    finished = 1
+                </trim>
+            </if>
+
+            <if test="from != null and to != null">
+                <trim prefix="and">
+                    dueDate between #{from} and #{to}
+                </trim>
+            </if>
+        </where>
+    </sql>
+
     <select id="selectList" resultType="com.cocoball.springp.domain.TodoVO">
-        select * from tbl_todo order by tno desc limit #{skip}, #{size} <!-- MyBatis는 get~~를 통해 작동하므로 getSkip() 호출-->
+        select * from tbl_todo
+
+        <include refid="search"></include> <!-- 동적 쿼리 include로 활용 -->
+
+        order by tno desc limit #{skip}, #{size} <!-- MyBatis는 get~~를 통해 작동하므로 getSkip() 호출-->
     </select>
 
     <select id="getCount" resultType="int">
         select count(tno) from tbl_todo
+        <include refid="search"></include>
     </select>
 
 </mapper>

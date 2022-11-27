@@ -5,11 +5,6 @@
        xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
 
-    <!-- <bean class="com.cocoball.springp.sample.SampleDAO"></bean>
-    <bean class="com.cocoball.springp.sample.SampleService"></bean> -->
-
-    <context:component-scan base-package="com.cocoball.springp.sample"></context:component-scan>
-
     <!-- HikariCP, DataSource 구성-->
 
     <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">

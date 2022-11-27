@@ -2,6 +2,8 @@ package com.cocoball.springp.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @ToString
@@ -12,9 +14,9 @@ import java.time.LocalDate;
 public class TodoDTO {
 
     private Long tno;
-    private String title;
-    private LocalDate dueDate;
+    @NotEmpty private String title;
+    @Future private LocalDate dueDate;
     private boolean finished;
-    private String writer;
+    @NotEmpty private String writer;
 
 }
